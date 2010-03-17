@@ -343,8 +343,6 @@ def WriteFullOTAPackage(input_zip, output_zip):
     ts = GetBuildProp("ro.build.date.utc", input_zip)
     script.AssertOlderBuild(ts)
 
-  script.RunBackup("backup")
-
   AppendAssertions(script, input_zip)
 
   script.ShowProgress(0.1, 0)
@@ -354,6 +352,8 @@ def WriteFullOTAPackage(input_zip, output_zip):
     script.WriteFirmwareImage("radio", "radio.img")
   except KeyError:
     print "warning: no radio image in input target_files; not flashing radio"
+
+  script.RunBackup("backup")
 
   script.ShowProgress(0.5, 0)
 
