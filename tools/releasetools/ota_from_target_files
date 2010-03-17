@@ -350,14 +350,7 @@ def WriteFullOTAPackage(input_zip, output_zip):
 
   AppendAssertions(script, input_zip)
 
-  script.ShowProgress(0.1, 0)
-
-  try:
-    common.ZipWriteStr(output_zip, "radio.img", input_zip.read("RADIO/image"))
-    script.WriteFirmwareImage("radio", "radio.img")
-  except KeyError:
-    print "warning: no radio image in input target_files; not flashing radio"
-
+  device_specific.FullOTA_Assertions()
   if OPTIONS.backuptool:
     script.FormatPartition("cache")
     script.RunBackup("backup")
@@ -770,7 +763,7 @@ def main(argv):
     elif o in ("-m", "--script_mode"):
       OPTIONS.script_mode = a
     elif o in ("--backup"):
-      OPTIONS.backuptool = bool(a.lower() is 'true')
+      OPTIONS.backuptool = bool(a.lower() == 'true')
     else:
       return False
     return True
