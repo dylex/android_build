@@ -919,7 +919,7 @@ $(INTERNAL_OTA_PACKAGE_TARGET): $(BUILT_TARGET_FILES_PACKAGE) otatools
 	   -n \
 	   -p $(HOST_OUT) \
            -k $(KEY_CERT_PAIR) \
-           --backup $(backuptool) \
+           --backup=$(backuptool) \
            $(BUILT_TARGET_FILES_PACKAGE) $@
 
 .PHONY: otapackage
