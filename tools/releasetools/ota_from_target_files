@@ -353,6 +353,7 @@ def WriteFullOTAPackage(input_zip, output_zip):
   except KeyError:
     print "warning: no radio image in input target_files; not flashing radio"
 
+  script.FormatPartition("cache")
   script.RunBackup("backup")
 
   script.ShowProgress(0.5, 0)
