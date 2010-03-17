@@ -48,6 +48,10 @@ Usage:  ota_from_target_files [flags] input_target_files output_ota_package
       Specify 'amend' or 'edify' scripts, or 'auto' to pick
       automatically (this is the default).
 
+  --backup <boolean>
+      Enable or disable the execution of backuptool.sh.
+      Disabled by default.
+
 """
 
 import sys
@@ -80,6 +84,7 @@ OPTIONS.wipe_user_data = False
 OPTIONS.omit_prereq = False
 OPTIONS.extra_script = None
 OPTIONS.script_mode = 'auto'
+OPTIONS.backuptool = False
 
 def MostPopularKey(d, default):
   """Given a dict, return the key corresponding to the largest
@@ -389,8 +394,9 @@ def WriteFullOTAPackage(input_zip, output_zip):
   common.ZipWriteStr(output_zip, "boot.img", boot_img.data)
   script.ShowProgress(0.2, 0)
 
-  script.ShowProgress(0.2, 10)
-  script.RunBackup("restore")
+  if OPTIONS.backuptool:
+    script.ShowProgress(0.2, 10)
+    script.RunBackup("restore")
 
   script.ShowProgress(0.2, 10)
   script.WriteRawImage("boot", "boot.img")
@@ -762,6 +768,8 @@ def main(argv):
       OPTIONS.extra_script = a
     elif o in ("-m", "--script_mode"):
       OPTIONS.script_mode = a
+    elif o in ("--backup"):
+      OPTIONS.backuptool = bool(a is 'true')
     else:
       return False
     return True
