@@ -911,6 +911,7 @@ ifeq ($(TARGET_OTA_BACKUPTOOL),)
 $(INTERNAL_OTA_PACKAGE_TARGET): backuptool := false
 else
 $(INTERNAL_OTA_PACKAGE_TARGET): backuptool := $(TARGET_OTA_BACKUPTOOL)
+endif
 
 ifeq ($(TARGET_RELEASETOOLS_EXTENSIONS),)
 # default to common dir for device vendor
