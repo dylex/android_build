@@ -204,7 +204,7 @@ ADDITIONAL_BUILD_PROPERTIES += xmpp.auto-presence=true
 ADDITIONAL_BUILD_PROPERTIES += ro.config.nocheckin=yes
 else # !sdk
 # Enable sync for non-sdk builds only (sdk builds lack SubscribedFeedsProvider).
-ADDITIONAL_BUILD_PROPERTIES += ro.config.sync=yes
+#ADDITIONAL_BUILD_PROPERTIES += ro.config.sync=yes
 endif
 
 # Install an apns-conf.xml file if one's not already being installed.

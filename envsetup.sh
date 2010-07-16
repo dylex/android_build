@@ -966,7 +966,7 @@ function godir () {
         echo ""
     fi
     local lines
-    lines=($(grep "$1" $T/filelist | sed -e 's/\/[^/]*$//' | sort | uniq)) 
+    lines=($(\grep "$1" $T/filelist | sed -e 's/\/[^/]*$//' | sort | uniq)) 
     if [[ ${#lines[@]} = 0 ]]; then
         echo "Not found"
         return
@@ -993,7 +993,7 @@ function godir () {
         done
     else
         # even though zsh arrays are 1-based, $foo[0] is an alias for $foo[1]
-        pathname=${lines[0]}
+        pathname=${lines}
     fi
     cd $T/$pathname
 }
@@ -1009,7 +1009,7 @@ fi
 unset _xarray
 
 # Execute the contents of any vendorsetup.sh files we can find.
-for f in `/bin/ls vendor/*/vendorsetup.sh vendor/*/build/vendorsetup.sh 2> /dev/null`
+for f in `set -G ; /bin/ls vendor/*/vendorsetup.sh vendor/*/build/vendorsetup.sh 2> /dev/null`
 do
     echo "including $f"
     . $f

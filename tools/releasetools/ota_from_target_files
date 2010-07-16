@@ -362,39 +362,46 @@ def WriteFullOTAPackage(input_zip, output_zip):
   script.FormatPartition("system")
   script.Mount("MTD", "system", "/system")
   script.ShowProgress(0.5, 40)
-  script.UnpackPackageDir("recovery", "/system")
+  if os.path.exists(os.path.join(OPTIONS.input_tmp, "RECOVERY")):
+    script.UnpackPackageDir("recovery", "/system")
   script.UnpackPackageDir("system", "/system")
 
   symlinks = CopySystemFiles(input_zip, output_zip)
   script.MakeSymlinks(symlinks)
 
-  boot_img = File("boot.img", common.BuildBootableImage(
+  if os.path.exists(os.path.join(OPTIONS.input_tmp, "BOOT")):
+    boot_img = File("boot.img", common.BuildBootableImage(
       os.path.join(OPTIONS.input_tmp, "BOOT")))
-  recovery_img = File("recovery.img", common.BuildBootableImage(
-      os.path.join(OPTIONS.input_tmp, "RECOVERY")))
-  i = MakeRecoveryPatch(output_zip, recovery_img, boot_img)
-
+    if os.path.exists(os.path.join(OPTIONS.input_tmp, "RECOVERY")):
+      recovery_img = File("recovery.img", common.BuildBootableImage(
+        os.path.join(OPTIONS.input_tmp, "RECOVERY")))
+      i = MakeRecoveryPatch(output_zip, recovery_img, boot_img)
+    else:
+      print "warning: no recovery image found"
+  else:
+    print "warning: no boot image found"
+  
   Item.GetMetadata()
-
+  
   # GetMetadata uses the data in android_filesystem_config.h to assign
   # the uid/gid/mode of all files.  We want to override that for the
   # recovery patching shell script to make it executable.
-  i.uid = 0
-  i.gid = 0
-  i.mode = 0544
+  if os.path.exists(os.path.join(OPTIONS.input_tmp, "RECOVERY")):
+    i.uid = 0
+    i.gid = 0
+    i.mode = 0544
+
   Item.Get("system").SetPermissions(script)
-
-  common.CheckSize(boot_img.data, "boot.img")
-  common.ZipWriteStr(output_zip, "boot.img", boot_img.data)
-  script.ShowProgress(0.2, 10)
-
-  if OPTIONS.backuptool:
-    script.Print("Restoring proprietary files...")
-    script.RunBackup("restore")
   
-  script.Print("Writing boot image...")
-  script.ShowProgress(0.2, 10)
-  script.WriteRawImage("boot", "boot.img")
+  if os.path.exists(os.path.join(OPTIONS.input_tmp, "BOOT")):
+    common.CheckSize(boot_img.data, "boot.img")
+    common.ZipWriteStr(output_zip, "boot.img", boot_img.data)
+    script.ShowProgress(0.2, 10)
+  
+    script.Print("Writing boot image...")
+    script.WriteRawImage("boot", "boot.img")
+  else:
+    script.ShowProgress(0.2, 10)
 
   script.ShowProgress(0.1, 10)
   script.Print("Install complete!")

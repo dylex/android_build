@@ -47,15 +47,13 @@ $(combo_target)LIBGCC := $(shell $($(combo_target)CC) -mthumb-interwork -print-l
 endif
 
 $(combo_target)GLOBAL_CFLAGS += \
-			-march=armv5te -mtune=xscale \
+			-march=armv6k \
 			-msoft-float -fpic \
 			-mthumb-interwork \
 			-ffunction-sections \
 			-funwind-tables \
 			-fstack-protector \
 			-fno-short-enums \
-			-D__ARM_ARCH_5__ -D__ARM_ARCH_5T__ \
-			-D__ARM_ARCH_5E__ -D__ARM_ARCH_5TE__ \
 			-include $(call select-android-config-h,linux-arm)
 
 $(combo_target)GLOBAL_CPPFLAGS += -fvisibility-inlines-hidden

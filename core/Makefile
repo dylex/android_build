@@ -517,6 +517,9 @@ recovery_resources_common := $(call include-path-for, recovery)/res
 recovery_resources_private := $(strip $(wildcard $(TARGET_DEVICE_DIR)/recovery/res))
 recovery_resource_deps := $(shell find $(recovery_resources_common) \
   $(recovery_resources_private) -type f)
+recovery_additional_executables := \
+    $(foreach _executable,$(ADDITIONAL_RECOVERY_EXECUTABLES), \
+        $(ALL_MODULES.$(_executable).BUILT))
 
 ifeq ($(recovery_resources_private),)
   $(info No private recovery resources for TARGET_DEVICE $(TARGET_DEVICE))
@@ -556,6 +559,7 @@ $(INSTALLED_RECOVERYIMAGE_TARGET): $(MKBOOTFS) $(MKBOOTIMG) $(MINIGZIP) \
 		$(INSTALLED_RAMDISK_TARGET) \
 		$(INSTALLED_BOOTIMAGE_TARGET) \
 		$(recovery_binary) \
+		$(recovery_additional_executables) \
 		$(recovery_initrc) $(recovery_kernel) \
 		$(INSTALLED_2NDBOOTLOADER_TARGET) \
 		$(recovery_build_prop) $(recovery_resource_deps) \
@@ -571,6 +575,14 @@ $(INSTALLED_RECOVERYIMAGE_TARGET): $(MKBOOTFS) $(MKBOOTIMG) $(MINIGZIP) \
 	echo Modifying ramdisk contents...
 	cp -f $(recovery_initrc) $(TARGET_RECOVERY_ROOT_OUT)/
 	cp -f $(recovery_binary) $(TARGET_RECOVERY_ROOT_OUT)/sbin/
+	mkdir -p $(TARGET_RECOVERY_ROOT_OUT)/system/bin
+	ln -s /sbin/busybox $(TARGET_RECOVERY_ROOT_OUT)/system/bin/sh
+	$(foreach _executable,$(recovery_additional_executables), \
+	    cp $(_executable) $(TARGET_RECOVERY_ROOT_OUT)/sbin/;)
+	$(hide) $(foreach busyboxlink,$(notdir $(BUSYBOX_LINKS)), \
+	  ln -s busybox $(TARGET_RECOVERY_ROOT_OUT)/sbin/$(busyboxlink);)
+	$(foreach recovery_tools_link,busybox flash_image dump_image mkyaffs2image unyaffs, \
+	  ln -s recovery $(TARGET_RECOVERY_ROOT_OUT)/sbin/$(recovery_tools_link);)
 	cp -rf $(recovery_resources_common) $(TARGET_RECOVERY_ROOT_OUT)/
 	$(foreach item,$(recovery_resources_private), \
 	  cp -rf $(item) $(TARGET_RECOVERY_ROOT_OUT)/)
@@ -832,6 +844,7 @@ $(BUILT_TARGET_FILES_PACKAGE): \
 	@echo "Package target files: $@"
 	$(hide) rm -rf $@ $(zip_root)
 	$(hide) mkdir -p $(dir $@) $(zip_root)
+ifdef xxxINSTALLED_RECOVERYIMAGE_TARGET
 	@# Components of the recovery image
 	$(hide) mkdir -p $(zip_root)/RECOVERY
 	$(hide) $(call package_files-copy-root, \
@@ -845,6 +858,7 @@ ifdef INSTALLED_2NDBOOTLOADER_TARGET
 endif
 ifdef BOARD_KERNEL_CMDLINE
 	$(hide) echo "$(BOARD_KERNEL_CMDLINE)" > $(zip_root)/RECOVERY/cmdline
+endif
 endif
 	@# Components of the boot image
 	$(hide) mkdir -p $(zip_root)/BOOT
@@ -934,7 +948,6 @@ $(INTERNAL_OTA_PACKAGE_TARGET): $(BUILT_TARGET_FILES_PACKAGE) otatools
 	   -m $(scriptmode) \
 	   -p $(HOST_OUT) \
            -k $(KEY_CERT_PAIR) \
-           --backup=$(backuptool) \
            $(BUILT_TARGET_FILES_PACKAGE) $@
 
 .PHONY: otapackage
