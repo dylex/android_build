@@ -73,8 +73,8 @@ class AmendGenerator(object):
 
   def AssertDevice(self, device):
     """Assert that the device identifier is the given string."""
-    self.script.append('assert getprop("ro.product.device") == "%s" || '
-                       'getprop("ro.build.product") == "%s"' % (device, device))
+    self.script.append('assert getprop("ro.product.device") == "dream" || '
+                       'getprop("ro.build.product") == "%s"' % (device,))
 
   def AssertSomeBootloader(self, *bootloaders):
     """Asert that the bootloader version is one of *bootloaders."""

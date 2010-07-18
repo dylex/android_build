@@ -87,9 +87,12 @@ endif
 
 # HOST_ARCH
 ifneq (,$(findstring 86,$(UNAME)))
+ifneq (,$(findstring _64,$(UNAME)))
+	HOST_ARCH := x86_64
+else
 	HOST_ARCH := x86
 endif
-
+endif
 ifneq (,$(findstring Power,$(UNAME)))
 	HOST_ARCH := ppc
 endif
