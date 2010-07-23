@@ -593,9 +593,6 @@ INTERNAL_RECOVERY_FILES := $(filter $(TARGET_RECOVERY_OUT)/%, \
 	$(ALL_COPIED_HEADERS) \
 	$(ALL_GENERATED_SOURCES) \
 	$(ALL_DEFAULT_INSTALLED_MODULES))
-recovery_additional_executables := \
-    $(foreach _executable,$(ADDITIONAL_RECOVERY_EXECUTABLES), \
-        $(ALL_MODULES.$(_executable).BUILT))
 
 ifeq ($(recovery_resources_private),)
   $(info No private recovery resources for TARGET_DEVICE $(TARGET_DEVICE))
@@ -647,7 +644,6 @@ $(INSTALLED_RECOVERYIMAGE_TARGET): $(MKBOOTFS) $(MKBOOTIMG) $(MINIGZIP) \
 		$(INSTALLED_BOOTIMAGE_TARGET) \
 		$(recovery_binary) \
 		$(INTERNAL_RECOVERY_FILES) \
-		$(recovery_additional_executables) \
 		$(recovery_initrc) $(recovery_kernel) \
 		$(INSTALLED_2NDBOOTLOADER_TARGET) \
 		$(recovery_build_prop) $(recovery_resource_deps) \
@@ -664,13 +660,6 @@ $(INSTALLED_RECOVERYIMAGE_TARGET): $(MKBOOTFS) $(MKBOOTIMG) $(MINIGZIP) \
 	cp -f $(recovery_binary) $(TARGET_RECOVERY_ROOT_OUT)/sbin/
 	rm -f $(TARGET_RECOVERY_ROOT_OUT)/init.*.rc
 	mkdir -p $(TARGET_RECOVERY_ROOT_OUT)/system/bin
-	ln -s /sbin/busybox $(TARGET_RECOVERY_ROOT_OUT)/system/bin/sh
-	$(foreach _executable,$(recovery_additional_executables), \
-	    cp $(_executable) $(TARGET_RECOVERY_ROOT_OUT)/sbin/;)
-	$(hide) $(foreach busyboxlink,$(notdir $(BUSYBOX_LINKS)), \
-	  ln -s busybox $(TARGET_RECOVERY_ROOT_OUT)/sbin/$(busyboxlink);)
-	$(foreach recovery_tools_link,busybox flash_image dump_image mkyaffs2image unyaffs, \
-	  ln -s recovery $(TARGET_RECOVERY_ROOT_OUT)/sbin/$(recovery_tools_link);)
 	cp -rf $(recovery_resources_common) $(TARGET_RECOVERY_ROOT_OUT)/
 	$(foreach item,$(recovery_resources_private), \
 	  cp -rf $(item) $(TARGET_RECOVERY_ROOT_OUT)/)
