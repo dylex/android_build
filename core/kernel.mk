@@ -52,6 +52,7 @@ BUILT_KERNEL_TARGET := $(KBUILD_OUTPUT)/arch/$(TARGET_ARCH)/boot/$(KERNEL_TARGET
 .PHONY: _zimage
 _zimage: $(KERNEL_DOTCONFIG_FILE) $(DARWIN_ELF_H)
 	@echo "**** BUILDING KERNEL ****"
+	-rmdir $(TARGET_KERNEL_DIR)/include/config
 	$(mk_kernel) oldconfig
 	$(mk_kernel) $(KERNEL_TARGET) $(if $(MOD_ENABLED),modules)
 
