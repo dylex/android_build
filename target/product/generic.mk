@@ -18,7 +18,6 @@
 # It includes the base Android platform.
 
 PRODUCT_PACKAGES := \
-    AccountAndSyncSettings \
     CarHome \
     DeskClock \
     AlarmProvider \
