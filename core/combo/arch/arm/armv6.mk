@@ -14,6 +14,12 @@ ARCH_ARM_HAVE_FFS               := true
 #
 arch_variant_cflags := \
     -march=armv6k \
-    -mtune=arm1136j-s
+    -mtune=arm1136j-s \
+    -pipe \
+    -fomit-frame-pointer \
+    -D__ARM_ARCH_5__ \
+    -D__ARM_ARCH_5T__ \
+    -D__ARM_ARCH_5E__ \
+    -D__ARM_ARCH_5TE__
 #    -mfpu=vfp \
 #    -mfloat-abi=softfp
