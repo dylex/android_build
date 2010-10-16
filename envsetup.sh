@@ -386,7 +386,7 @@ function choosevariant()
             export TARGET_BUILD_VARIANT=$default_value
         elif (echo -n $ANSWER | grep -q -e "^[0-9][0-9]*$") ; then
             if [ "$ANSWER" -le "${#VARIANT_CHOICES[@]}" ] ; then
-                export TARGET_BUILD_VARIANT=${VARIANT_CHOICES[$(($ANSWER-1))]}
+                export TARGET_BUILD_VARIANT=${VARIANT_CHOICES[$ANSWER]}
             fi
         else
             if check_variant $ANSWER
@@ -491,7 +491,7 @@ function lunch()
     then
         if [ $answer -le ${#LUNCH_MENU_CHOICES[@]} ]
         then
-            selection=${LUNCH_MENU_CHOICES[$(($answer-1))]}
+            selection=${LUNCH_MENU_CHOICES[$answer]}
         fi
     elif (echo -n $answer | grep -q -e "^[^\-][^\-]*-[^\-][^\-]*$")
     then
@@ -1090,7 +1090,7 @@ function godir () {
                 echo "Invalid choice"
                 continue
             fi
-            pathname=${lines[$(($choice-1))]}
+            pathname=${lines[$choice]}
         done
     else
         pathname=${lines}
