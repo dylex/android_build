@@ -74,8 +74,8 @@ _wifi: _modules
 ifneq ($(TARGET_NO_BUILD_WIFI),true)
 	@echo "**** BUILDING WIFI ****"
 ifneq ($(MOD_ENABLED),)
-	@echo "Copying $(shell ls $(CURDIR)/$(TARGET_OUT)/lib/modules/*/kernel/drivers/net/wireless/*/*.ko) -> $(CURDIR)/$(TARGET_OUT)/lib/modules/$(notdir $(shell ls $(CURDIR)/$(TARGET_OUT)/lib/modules/*/kernel/drivers/net/wireless/*/*.ko))"
-	$(hide) cp $(shell ls $(CURDIR)/$(TARGET_OUT)/lib/modules/*/kernel/drivers/net/wireless/*/*.ko) $(CURDIR)/$(TARGET_OUT)/lib/modules/$(notdir $(shell ls $(CURDIR)/$(TARGET_OUT)/lib/modules/*/kernel/drivers/net/wireless/*/*.ko))
+	@echo "Linking $(patsubst $(CURDIR)/$(TARGET_OUT)/lib/modules/%,%,$(shell ls $(CURDIR)/$(TARGET_OUT)/lib/modules/*/kernel/drivers/net/wireless/*/*.ko)) -> $(CURDIR)/$(TARGET_OUT)/lib/modules"
+	$(hide) ln -sf $(patsubst $(CURDIR)/$(TARGET_OUT)/lib/modules/%,%,$(shell ls $(CURDIR)/$(TARGET_OUT)/lib/modules/*/kernel/drivers/net/wireless/*/*.ko)) $(CURDIR)/$(TARGET_OUT)/lib/modules
 endif
 endif
 
