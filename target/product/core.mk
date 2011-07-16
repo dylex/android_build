@@ -27,7 +27,6 @@ PRODUCT_PROPERTY_OVERRIDES := \
 PRODUCT_PACKAGES := \
     framework-res \
     Browser \
-    CarHomeLauncher \
     Contacts \
     Home \
     HTMLViewer \
@@ -36,15 +35,11 @@ PRODUCT_PACKAGES := \
     ContactsProvider \
     DownloadProvider \
     MediaProvider \
-    PicoTts \
     SettingsProvider \
     TelephonyProvider \
-    TtsService \
-    VpnServices \
     UserDictionaryProvider \
     PackageInstaller \
-    DefaultContainerService \
-    Bugreport
+    DefaultContainerService
 
 PRODUCT_PROPERTY_OVERRIDES += \
     media.stagefright.enable-player=true \

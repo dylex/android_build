@@ -19,9 +19,6 @@
 # build of the emulator, but all those aspects can be overridden
 # in inherited configurations.
 
-PRODUCT_PACKAGES := \
-    VoiceDialer
-
 # Additional settings used in all AOSP builds
 PRODUCT_PROPERTY_OVERRIDES := \
     keyguard.no_require_sim=true
