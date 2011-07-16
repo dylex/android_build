@@ -18,7 +18,6 @@
 # It includes the base Android platform.
 
 PRODUCT_PACKAGES := \
-    AccountAndSyncSettings \
     DeskClock \
     AlarmProvider \
     Bluetooth \
@@ -26,7 +25,6 @@ PRODUCT_PACKAGES := \
     Calendar \
     Camera \
     CertInstaller \
-    DrmProvider \
     Email \
     Gallery3D \
     LatinIME \
@@ -34,13 +32,11 @@ PRODUCT_PACKAGES := \
     Mms \
     Music \
     Provision \
-    Protips \
     QuickSearchBox \
     Settings \
     Superuser \
     Sync \
     SystemUI \
-    Updater \
     CalendarProvider \
     SyncProvider
 

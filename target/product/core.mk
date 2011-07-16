@@ -62,15 +62,11 @@ PRODUCT_PACKAGES := \
     DownloadProvider \
     DownloadProviderUi \
     MediaProvider \
-    PicoTts \
     SettingsProvider \
     TelephonyProvider \
-    TtsService \
-    VpnServices \
     UserDictionaryProvider \
     PackageInstaller \
-    DefaultContainerService \
-    Bugreport
+    DefaultContainerService
 
 # host-only dependencies
 ifeq ($(WITH_HOST_DALVIK),true)

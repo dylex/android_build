@@ -21,7 +21,6 @@
 PRODUCT_PACKAGES := \
     OpenWnn \
     PinyinIME \
-    VoiceDialer \
     libWnnEngDic \
     libWnnJpnDic \
     libwnndict
