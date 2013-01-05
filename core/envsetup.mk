@@ -125,11 +125,13 @@ endif
 
 # Default to building dalvikvm on hosts that support it...
 ifeq ($(HOST_OS),linux)
+ifneq ($(HOST_ARCH),x86_64)
 # ... but not if we're building the sim...
 ifneq ($(TARGET_SIMULATOR),true)
 # ... or if the if the option is already set
 ifeq ($(WITH_HOST_DALVIK),)
 	WITH_HOST_DALVIK := true
+endif
 endif
 endif
 endif
