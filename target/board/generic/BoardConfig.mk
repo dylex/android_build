@@ -31,5 +31,7 @@ USE_CAMERA_STUB := true
 # Enable dex-preoptimization to speed up the first boot sequence
 # of an SDK AVD. Note that this operation only works on Linux for now
 ifeq ($(HOST_OS),linux)
+ifneq ($(HOST_ARCH),x86_64)
 WITH_DEXPREOPT := true
+endif
 endif

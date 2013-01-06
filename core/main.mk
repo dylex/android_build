@@ -212,7 +212,9 @@ ifneq (,$(user_variant))
   # working.
   ifneq (true,$(DISABLE_DEXPREOPT))
   ifeq ($(HOST_OS)-$(WITH_DEXPREOPT_buildbot),linux-true)
+  ifneq ($(HOST_ARCH),x86_64)
     WITH_DEXPREOPT := true
+  endif
   endif
   endif
 

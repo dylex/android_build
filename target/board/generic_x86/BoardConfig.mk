@@ -24,5 +24,7 @@ TARGET_SHELL := mksh
 # Enable dex-preoptimization to speed up the first boot sequence
 # of an SDK AVD. Note that this operation only works on Linux for now
 ifeq ($(HOST_OS),linux)
+ifeq ($(HOST_ARCH),$(TARGET_ARCH))
 WITH_DEXPREOPT := true
+endif
 endif
