@@ -265,7 +265,7 @@ endif
 ifeq ($(HOST_OS),darwin)
 dir := $(HOST_OS)-$(HOST_ARCH)
 endif
-OLD_FLEX := prebuilt/$(HOST_PREBUILT_TAG)/flex/flex-2.5.4a$(HOST_EXECUTABLE_SUFFIX)
+OLD_FLEX := $(LEX)
 
 ifeq ($(HOST_OS),darwin)
 # Mac OS' screwy version of java uses a non-standard directory layout
